@@ -1,0 +1,27 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.ipynb_checkpoints/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# App data / user uploads / generated reports (keep repo clean)
+data/uploads/
+data/outputs/
+reports_generated/
+*.log
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

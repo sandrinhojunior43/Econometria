@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ titulo }}</title>
+<style>
+  :root {
+    --azul-900: #0b2545;
+    --azul-700: #13315c;
+    --azul-500: #2563eb;
+    --azul-100: #e8f0fe;
+    --verde-600: #0f9d58;
+    --vermelho-600: #d93025;
+    --cinza-50: #f8f9fb;
+    --cinza-100: #eef1f6;
+    --cinza-300: #d4dae3;
+    --cinza-600: #5b6677;
+    --cinza-900: #1a2233;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+    background: var(--cinza-50);
+    color: var(--cinza-900);
+    line-height: 1.55;
+  }
+  .container { max-width: 980px; margin: 0 auto; padding: 0 24px 64px; }
+  header.capa {
+    background: linear-gradient(135deg, var(--azul-900), var(--azul-500));
+    color: white;
+    padding: 48px 24px 40px;
+    margin-bottom: 32px;
+  }
+  header.capa .container { padding: 0 24px; }
+  header.capa .selo {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.15);
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  header.capa h1 { font-size: 32px; margin: 0 0 8px; font-weight: 700; }
+  header.capa p.subtitulo { font-size: 16px; opacity: 0.9; margin: 0 0 20px; max-width: 640px; }
+  header.capa .meta { font-size: 13px; opacity: 0.75; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .card {
+    background: white;
+    border: 1px solid var(--cinza-300);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  }
+  .card .rotulo { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cinza-600); margin-bottom: 6px; }
+  .card .valor { font-size: 24px; font-weight: 700; color: var(--azul-900); }
+  .card .dica { font-size: 12px; color: var(--cinza-600); margin-top: 6px; }
+
+  section.secao {
+    background: white;
+    border: 1px solid var(--cinza-300);
+    border-radius: var(--radius);
+    padding: 28px 30px;
+    margin-bottom: 24px;
+  }
+  section.secao h2 {
+    font-size: 19px;
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--azul-100);
+    color: var(--azul-900);
+  }
+  section.secao p { margin: 0 0 12px; color: var(--cinza-900); }
+  section.secao ul { margin: 0 0 12px; padding-left: 20px; }
+  section.secao li { margin-bottom: 6px; }
+  section.secao strong { color: var(--azul-700); }
+
+  .legenda-tabela, .legenda-figura {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--cinza-900);
+    margin: 18px 0 8px;
+  }
+  table.tabela-dados {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 13px;
+    margin-bottom: 8px;
+    overflow-x: auto;
+    display: block;
+  }
+  table.tabela-dados thead th {
+    background: var(--azul-100);
+    color: var(--azul-900);
+    text-align: left;
+    padding: 8px 10px;
+    position: sticky;
+    top: 0;
+  }
+  table.tabela-dados td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--cinza-100);
+  }
+  table.tabela-dados tbody tr:nth-child(even) { background: var(--cinza-50); }
+
+  .figura img { max-width: 100%; border-radius: 8px; border: 1px solid var(--cinza-300); }
+
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--cinza-600);
+    padding: 24px 0;
+  }
+
+  @media print {
+    body { background: white; }
+    section.secao, header.capa { box-shadow: none; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+  <header class="capa">
+    <div class="container">
+      <span class="selo">Relatorio Econometria</span>
+      <h1>{{ titulo }}</h1>
+      {% if subtitulo %}<p class="subtitulo">{{ subtitulo }}</p>{% endif %}
+      <div class="meta">Gerado em {{ data_geracao }}{% if autor %} &middot; {{ autor }}{% endif %}</div>
+    </div>
+  </header>
+
+  <div class="container">
+    {% if cards %}
+    <div class="cards">
+      {% for card in cards %}
+      <div class="card">
+        <div class="rotulo">{{ card.rotulo }}</div>
+        <div class="valor">{{ card.valor }}</div>
+        {% if card.dica %}<div class="dica">{{ card.dica }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% for secao in secoes %}
+    <section class="secao">
+      <h2>{{ secao.titulo }}</h2>
+      {{ secao.texto_html | safe }}
+      {% for tab in secao.tabelas %}
+        {% if tab.legenda %}<div class="legenda-tabela">{{ tab.legenda }}</div>{% endif %}
+        {{ tab.html | safe }}
+      {% endfor %}
+      {% for fig in secao.figuras %}
+        {% if fig.legenda %}<div class="legenda-figura">{{ fig.legenda }}</div>{% endif %}
+        <div class="figura"><img src="{{ fig.src }}" alt="{{ fig.legenda }}"></div>
+      {% endfor %}
+    </section>
+    {% endfor %}
+
+    <footer>Relatorio gerado automaticamente pelo sistema Econometria.</footer>
+  </div>
+</body>
+</html>
