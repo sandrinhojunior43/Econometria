@@ -73,6 +73,26 @@ JSON ou Parquet) ou clique em um dos **datasets de exemplo** para explorar qualq
 > Alternativa: `pip install -e .` instala o pacote `econometria` no ambiente, permitindo usar o motor
 > de calculo diretamente em scripts/notebooks (`from econometria.regression import ols_regression`).
 
+## ☁️ Deploy (uso online)
+
+Este e um app **Streamlit**: um servidor Python com estado (WebSocket + sessao em memoria), nao um
+site estatico nem uma API serverless. Por isso ele **nao roda em plataformas serverless como Vercel**
+— precisa de um host que mantenha um processo Python vivo. A opcao gratuita e oficial para isso e o
+**Streamlit Community Cloud**, e o repositorio ja esta pronto para ele (`requirements.txt` na raiz,
+`.streamlit/config.toml` com o tema visual do sistema, `.python-version` fixando Python 3.11):
+
+1. Acesse **[share.streamlit.io](https://share.streamlit.io)** e entre com sua conta GitHub.
+2. Clique em **"New app"** e selecione este repositorio e a branch desejada.
+3. Em **"Main file path"**, informe `app/Home.py`.
+4. Clique em **"Deploy"**. Em poucos minutos o app fica disponivel em uma URL publica
+   (formato `https://<nome-do-app>.streamlit.app`), pronta para acessar do navegador ou compartilhar.
+
+Cada novo `git push` na branch conectada atualiza o app automaticamente.
+
+**Alternativas** (quando se precisa de mais controle, dominio proprio ou infraestrutura paga): qualquer
+plataforma que rode containers/servidores persistentes funciona — Render, Railway, Fly.io, Hugging Face
+Spaces ou um servidor proprio com `streamlit run app/Home.py` atras de um proxy reverso.
+
 ## 🧪 Testes
 
 ```bash
